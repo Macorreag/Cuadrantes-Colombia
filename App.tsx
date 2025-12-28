@@ -2,10 +2,8 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { setOptions, importLibrary } from '@googlemaps/js-api-loader';
 import { DARK_MAP_STYLE, BOGOTA_CENTER } from './constants';
-import { QuadrantData, SafetyScore } from './types';
-import { getSafetyAnalysis } from './services/geminiService';
+import { QuadrantData } from './types';
 import QuadrantPanel from './components/QuadrantPanel';
-import SafetyPanel from './components/SafetyPanel';
 import BottomBar from './components/BottomBar';
 
 const MNVCC_BASE_URL = "https://utility.arcgis.com/usrsvcs/servers/79feadae6f374b1882eb87e6983e8452/rest/services/CAPAS/MNVCC_CUADRANTES/FeatureServer";
@@ -16,8 +14,7 @@ const App: React.FC = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const [selectedQuadrant, setSelectedQuadrant] = useState<QuadrantData | null>(null);
-  const [safetyData, setSafetyData] = useState<SafetyScore | null>(null);
-  const [loadingSafety, setLoadingSafety] = useState(false);
+  const [loading, setLoading] = useState(false);
   
   const processPersonnel = (personnelFeatures: any[]): any[] => {
     const seen = new Set();
@@ -42,16 +39,10 @@ const App: React.FC = () => {
       });
   };
 
-  const handleSelection = useCallback(async (neighborhood: string, id: string) => {
-    setLoadingSafety(true);
-    const analysis = await getSafetyAnalysis(neighborhood, id);
-    setSafetyData(analysis);
-    setLoadingSafety(false);
-  }, []);
-
   const fetchQuadrantAtLocation = async (lat: number, lng: number) => {
     if (!mapInstanceRef.current) return;
     
+    setLoading(true);
     const geomParams = new URLSearchParams({
       f: 'geojson',
       where: '1=1',
@@ -109,16 +100,12 @@ const App: React.FC = () => {
           officers: officersList
         };
         
-        setSelectedQuadrant(prev => {
-          if (prev?.id !== info.id) {
-            handleSelection(info.cai, info.id);
-            return info;
-          }
-          return prev;
-        });
+        setSelectedQuadrant(info);
       }
     } catch (error) {
       console.error("Error en sincronización SIDENCO:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -166,7 +153,7 @@ const App: React.FC = () => {
     };
 
     initMap();
-  }, [handleSelection]);
+  }, []);
 
   return (
     <div className="relative w-full h-full bg-black overflow-hidden font-sans">
@@ -215,9 +202,7 @@ const App: React.FC = () => {
       </div>
 
       <div className="absolute inset-0 pointer-events-none z-20">
-        <QuadrantPanel quadrant={selectedQuadrant} loading={loadingSafety} />
-        <SafetyPanel data={safetyData} loading={loadingSafety} />
-        
+        <QuadrantPanel quadrant={selectedQuadrant} loading={loading} />
         <BottomBar />
       </div>
     </div>

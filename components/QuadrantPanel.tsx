@@ -101,7 +101,7 @@ const QuadrantPanel: React.FC<Props> = ({ quadrant, loading }) => {
             {loading && (
               <div className="flex items-center gap-3 py-3 px-4 rounded-xl bg-blue-500/5 border border-blue-500/10">
                 <div className="animate-spin rounded-full h-3 w-3 border-2 border-blue-400 border-t-transparent" />
-                <span className="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Sincronizando IA de Seguridad...</span>
+                <span className="text-[10px] font-bold text-blue-400 uppercase tracking-widest">Sincronizando Cuadrante...</span>
               </div>
             )}
           </div>
