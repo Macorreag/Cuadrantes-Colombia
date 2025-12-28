@@ -1,0 +1,7 @@
+{
+  "name": "Bogotá Safety Quadrants Explorer",
+  "description": "Interactive map visualization of police quadrants in Bogotá with AI-powered safety insights using Gemini 3 and Google Search grounding.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
