@@ -1,109 +1,59 @@
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { setOptions, importLibrary } from '@googlemaps/js-api-loader';
 import { DARK_MAP_STYLE, BOGOTA_CENTER } from './constants';
 import { QuadrantData } from './types';
 import QuadrantPanel from './components/QuadrantPanel';
 import BottomBar from './components/BottomBar';
+import { fetchQuadrantWithFallback, preloadOfflineData } from './services/quadrantService';
 
-const MNVCC_BASE_URL = "https://utility.arcgis.com/usrsvcs/servers/79feadae6f374b1882eb87e6983e8452/rest/services/CAPAS/MNVCC_CUADRANTES/FeatureServer";
-const MNVCC_GEOMETRY_URL = `${MNVCC_BASE_URL}/1/query`;
-const MNVCC_PERSONNEL_URL = `${MNVCC_BASE_URL}/0/query`;
+// Tipo de fuente de datos
+type DataSource = 'official' | 'alternative' | 'offline' | null;
 
 const App: React.FC = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const [selectedQuadrant, setSelectedQuadrant] = useState<QuadrantData | null>(null);
   const [loading, setLoading] = useState(false);
-  
-  const processPersonnel = (personnelFeatures: any[]): any[] => {
-    const seen = new Set();
-    return personnelFeatures
-      .map(f => f.properties)
-      .filter(props => {
-        const id = `${props.EMPLEADO}-${props.TELEFONO}`;
-        if (seen.has(id)) return false;
-        seen.add(id);
-        return props.EMPLEADO && props.EMPLEADO !== "null";
-      })
-      .map(props => {
-        const name = props.EMPLEADO.toUpperCase();
-        const rangeMatch = name.match(/^(PT|SI|IT|CT|MY|TE|ST)\.?\s/);
-        const initials = rangeMatch ? rangeMatch[1] : name.substring(0, 2);
-        
-        return {
-          name: name,
-          phone: (props.TELEFONO && props.TELEFONO !== "0") ? props.TELEFONO : "S/N",
-          initials: initials
-        };
-      });
-  };
+  const [dataSource, setDataSource] = useState<DataSource>(null);
+
+  // Pre-cargar datos offline al iniciar
+  useEffect(() => {
+    preloadOfflineData().catch(console.warn);
+  }, []);
 
   const fetchQuadrantAtLocation = async (lat: number, lng: number) => {
     if (!mapInstanceRef.current) return;
     
     setLoading(true);
-    const geomParams = new URLSearchParams({
-      f: 'geojson',
-      where: '1=1',
-      outFields: '*',
-      geometryType: 'esriGeometryPoint',
-      geometry: `${lng},${lat}`,
-      spatialRel: 'esriSpatialRelIntersects',
-      inSr: '4326',
-      outSr: '4326',
-      returnGeometry: 'true'
-    });
 
     try {
-      const geomRes = await fetch(`${MNVCC_GEOMETRY_URL}?${geomParams.toString()}`);
-      const geomData = await geomRes.json();
+      // Usar el servicio con fallback automático
+      const result = await fetchQuadrantWithFallback(lat, lng);
 
-      if (geomData.features && geomData.features.length > 0) {
+      if (result) {
+        // Limpiar datos anteriores del mapa
         mapInstanceRef.current.data.forEach((feature: any) => mapInstanceRef.current.data.remove(feature));
-        mapInstanceRef.current.data.addGeoJson(geomData);
         
-        const mainProps = geomData.features[0].properties;
-        const quadrantId = mainProps.COD_CUAD_P || mainProps.NRO_CUADRANTE || mainProps.NRO_CUADRA;
-        
-        let caiName = (
-          mainProps.NOMBRE_CUADRA || 
-          mainProps.NOMBRE_CAI || 
-          mainProps.CAI || 
-          mainProps.NOM_CAI || 
-          "CAI SECTORIAL"
-        ).toUpperCase();
-
-        const personnelParams = new URLSearchParams({
-          f: 'geojson',
-          where: `NRO_CUADRA = '${quadrantId}'`,
-          outFields: '*',
-          returnGeometry: 'false'
-        });
-
-        const personnelRes = await fetch(`${MNVCC_PERSONNEL_URL}?${personnelParams.toString()}`);
-        const personnelData = await personnelRes.json();
-        
-        if (caiName === "CAI SECTORIAL" && personnelData.features && personnelData.features.length > 0) {
-          const firstPers = personnelData.features[0].properties;
-          if (firstPers.NOMBRE_CUADRA) {
-            caiName = firstPers.NOMBRE_CUADRA.toUpperCase();
-          }
+        // Agregar geometría al mapa
+        if (result.geometry) {
+          mapInstanceRef.current.data.addGeoJson(result.geometry);
         }
-
-        const officersList = processPersonnel(personnelData.features || []);
-
-        const info: QuadrantData = {
-          id: quadrantId,
-          name: caiName,
-          cai: caiName,
-          officers: officersList
-        };
         
-        setSelectedQuadrant(info);
+        // Actualizar estado
+        setSelectedQuadrant(result.quadrant);
+        setDataSource(result.source);
+        
+        // Log de la fuente de datos
+        const sourceEmoji = result.source === 'official' ? '🟢' : result.source === 'alternative' ? '🟡' : '🔴';
+        console.log(`${sourceEmoji} Datos de: ${result.source}`);
+      } else {
+        setSelectedQuadrant(null);
+        setDataSource(null);
       }
     } catch (error) {
       console.error("Error en sincronización SIDENCO:", error);
+      setSelectedQuadrant(null);
     } finally {
       setLoading(false);
     }
@@ -186,13 +136,19 @@ const App: React.FC = () => {
               <div className="bg-slate-950/90 px-6 py-3 rounded-2xl border border-blue-500/20 backdrop-blur-2xl shadow-[0_15px_40px_rgba(0,0,0,0.8)]">
                 <div className="flex flex-col">
                   <div className="flex items-center gap-2 mb-1.5">
-                    <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse shadow-[0_0_10px_rgba(96,165,250,0.8)]" />
+                    <div className={`w-2 h-2 rounded-full animate-pulse shadow-[0_0_10px_rgba(96,165,250,0.8)] ${
+                      dataSource === 'official' ? 'bg-green-400' : 
+                      dataSource === 'alternative' ? 'bg-yellow-400' : 
+                      dataSource === 'offline' ? 'bg-orange-400' : 'bg-blue-400'
+                    }`} />
                     <span className="text-[12px] font-black text-white uppercase tracking-[0.3em] whitespace-nowrap leading-none">
-                      SCANNER POSITION ACTIVE
+                      {loading ? 'SINCRONIZANDO...' : 'SCANNER POSITION ACTIVE'}
                     </span>
                   </div>
                   <span className="text-[9px] font-mono font-bold text-blue-300/60 uppercase tracking-widest pl-4 border-l border-blue-500/30">
-                    SIDENCO GEO-LOCK SYNC
+                    {dataSource === 'official' ? '🟢 API OFICIAL' : 
+                     dataSource === 'alternative' ? '🟡 API ALTERNATIVA' : 
+                     dataSource === 'offline' ? '🔴 DATOS OFFLINE' : 'SIDENCO GEO-LOCK SYNC'}
                   </span>
                 </div>
               </div>
