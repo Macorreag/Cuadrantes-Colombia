@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Phone, Shield, ChevronDown, ChevronUp, Radio, User } from 'lucide-react';
+import { Phone, Shield, ChevronDown, ChevronUp, Radio, User, MapPin, ExternalLink } from 'lucide-react';
 import { QuadrantData } from '../types';
 
 interface Props {
@@ -26,12 +26,26 @@ const QuadrantPanel: React.FC<Props> = ({ quadrant, loading }) => {
           </div>
           <div className="min-w-0 flex-1">
             <h2 className="text-[10px] font-black text-blue-400 uppercase tracking-[0.2em] truncate">DATOS DE CUADRANTE</h2>
-            <h3 
-              className="text-lg font-bold text-white mt-0.5 tracking-tight uppercase truncate group-hover/header:whitespace-normal group-hover/header:overflow-visible transition-all cursor-help"
-              title={quadrant.cai}
-            >
-              {quadrant.cai}
-            </h3>
+            <div className="flex items-center gap-2 mt-0.5">
+              <h3 
+                className="text-lg font-bold text-white tracking-tight uppercase truncate group-hover/header:whitespace-normal group-hover/header:overflow-visible transition-all cursor-help"
+                title={quadrant.cai}
+              >
+                {quadrant.cai}
+              </h3>
+              {quadrant.caiLocation && (
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${quadrant.caiLocation.lat},${quadrant.caiLocation.lng}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="flex-shrink-0 p-1.5 rounded-lg bg-blue-500/10 border border-blue-500/20 hover:bg-blue-500/30 hover:border-blue-400/50 transition-all group/maps"
+                  title="Ver ubicación del CAI en Google Maps"
+                >
+                  <MapPin size={14} className="text-blue-400 group-hover/maps:text-blue-300" />
+                </a>
+              )}
+            </div>
           </div>
         </div>
         <button className="p-2 flex-shrink-0 hover:bg-white/10 rounded-xl transition-colors text-white/60 ml-2">

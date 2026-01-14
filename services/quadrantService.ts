@@ -23,13 +23,12 @@ let lastOnlineCheck = 0;
 const ONLINE_CHECK_INTERVAL = 60000; // Verificar cada 60 segundos
 
 /**
- * Carga los datos offline desde archivos locales o URLs de respaldo
+ * Carga los datos offline desde archivos locales
  */
 async function loadOfflineData(): Promise<void> {
   if (offlineCuadrantes && offlinePersonal) return;
 
   try {
-    // Intentar cargar desde archivos locales (para desarrollo)
     const [cuadrantesRes, personalRes] = await Promise.all([
       fetch('/data/cuadrantes_colombia.min.geojson').catch(() => null),
       fetch('/data/personal_policia_simple.json').catch(() => null)
@@ -179,13 +178,33 @@ async function fetchFromOfficialAPI(lat: number, lng: number): Promise<{ geometr
 
     const officersList = processPersonnel(personnelData.features || []);
 
+    // Usar coordenadas directamente de las propiedades del cuadrante
+    let caiLocation: { lat: number; lng: number; nombre: string } | undefined;
+    
+    if (mainProps.LATITUD && mainProps.LONGITUD) {
+      caiLocation = {
+        lat: parseFloat(mainProps.LATITUD),
+        lng: parseFloat(mainProps.LONGITUD),
+        nombre: caiName
+      };
+      console.log(`📍 CAI ubicado desde API oficial: (${caiLocation.lat}, ${caiLocation.lng})`);
+    } else {
+      // Si no hay coordenadas en el API, buscar en personal offline
+      await loadOfflineData();
+      caiLocation = findCAILocationFromPersonnel(quadrantId);
+      if (!caiLocation) {
+        console.log('⚠️ Sin coordenadas disponibles para CAI');
+      }
+    }
+
     return {
       geometry: geomData,
       quadrant: {
         id: quadrantId,
         name: caiName,
         cai: caiName,
-        officers: officersList
+        officers: officersList,
+        caiLocation: caiLocation
       }
     };
   } catch (error) {
@@ -247,18 +266,62 @@ async function fetchFromAlternativeAPI(lat: number, lng: number): Promise<{ geom
       console.warn('No se pudo obtener personal del servicio alternativo');
     }
 
+    // Usar coordenadas directamente de las propiedades del cuadrante
+    let caiLocation: { lat: number; lng: number; nombre: string } | undefined;
+    
+    if (props.LATITUD && props.LONGITUD) {
+      caiLocation = {
+        lat: parseFloat(props.LATITUD),
+        lng: parseFloat(props.LONGITUD),
+        nombre: props.DESCRIPCION || props.CUAD || 'CAI'
+      };
+      console.log(`📍 CAI ubicado desde API: (${caiLocation.lat}, ${caiLocation.lng})`);
+    } else {
+      // Si no hay coordenadas en el API, buscar en personal offline
+      await loadOfflineData();
+      caiLocation = findCAILocationFromPersonnel(quadrantId);
+      if (!caiLocation) {
+        console.log('⚠️ Sin coordenadas disponibles para CAI');
+      }
+    }
+
     return {
       geometry: data,
       quadrant: {
         id: quadrantId,
         name: props.DESCRIPCION || props.CUAD || 'Cuadrante',
         cai: props.DESCRIPCION || props.CUAD || 'CAI',
-        officers: officers
+        officers: officers,
+        caiLocation: caiLocation
       }
     };
   } catch (error) {
     throw error;
   }
+}
+
+/**
+ * Encuentra las coordenadas del CAI en el personal offline
+ */
+function findCAILocationFromPersonnel(quadrantId: string): { lat: number; lng: number; nombre: string } | undefined {
+  if (!offlinePersonal) return undefined;
+
+  // Buscar personal que coincida con este cuadrante
+  const quadrantSuffix = quadrantId.split('-').pop() || '';
+  const match = offlinePersonal.find((p: any) => 
+    p.cuadrante?.includes(quadrantSuffix) && p.lat && p.lng
+  );
+
+  if (match) {
+    console.log(`📍 CAI encontrado desde personal: ${match.cai} (${match.lat}, ${match.lng})`);
+    return {
+      lat: match.lat,
+      lng: match.lng,
+      nombre: match.cai || 'CAI'
+    };
+  }
+
+  return undefined;
 }
 
 /**
@@ -283,12 +346,35 @@ async function fetchFromOfflineData(lat: number, lng: number): Promise<{ geometr
 
         // Buscar personal asociado
         let officers: any[] = [];
+        let caiLocation: { lat: number; lng: number; nombre: string } | undefined;
+
         if (offlinePersonal) {
+          const quadrantSuffix = quadrantId.split('-').pop() || '';
           const matchingPersonnel = offlinePersonal.filter((p: any) => 
-            p.cuadrante?.includes(quadrantId.split('-').pop()) ||
-            p.cai?.includes(quadrantId.split('-').pop())
+            p.cuadrante?.includes(quadrantSuffix) ||
+            p.cai?.includes(quadrantSuffix)
           );
           officers = processPersonnel(matchingPersonnel);
+
+          // Obtener coordenadas del primer personal que las tenga
+          const personnelWithCoords = matchingPersonnel.find((p: any) => p.lat && p.lng);
+          if (personnelWithCoords) {
+            caiLocation = {
+              lat: personnelWithCoords.lat,
+              lng: personnelWithCoords.lng,
+              nombre: personnelWithCoords.cai || props.DESCRIPCION || 'CAI'
+            };
+            console.log(`📍 CAI ubicado: ${caiLocation.nombre} (${caiLocation.lat}, ${caiLocation.lng})`);
+          }
+        }
+
+        // Si no hay coordenadas del personal, intentar usar las del cuadrante
+        if (!caiLocation && props.LATITUD && props.LONGITUD) {
+          caiLocation = {
+            lat: parseFloat(props.LATITUD),
+            lng: parseFloat(props.LONGITUD),
+            nombre: props.DESCRIPCION || props.CUAD || 'CAI'
+          };
         }
 
         return {
@@ -300,7 +386,8 @@ async function fetchFromOfflineData(lat: number, lng: number): Promise<{ geometr
             id: quadrantId,
             name: props.DESCRIPCION || props.CUAD || 'Cuadrante',
             cai: props.DESCRIPCION || props.CUAD || 'CAI',
-            officers: officers
+            officers: officers,
+            caiLocation: caiLocation
           }
         };
       }

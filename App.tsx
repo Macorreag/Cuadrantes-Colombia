@@ -13,6 +13,7 @@ type DataSource = 'official' | 'alternative' | 'offline' | null;
 const App: React.FC = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
+  const caiMarkerRef = useRef<any>(null);
   const [selectedQuadrant, setSelectedQuadrant] = useState<QuadrantData | null>(null);
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState<DataSource>(null);
@@ -21,6 +22,38 @@ const App: React.FC = () => {
   useEffect(() => {
     preloadOfflineData().catch(console.warn);
   }, []);
+
+  // Función para crear el marcador del CAI usando Data Layer (mismo sistema que el polígono)
+  const updateCAIMarker = (caiLocation: { lat: number; lng: number; nombre: string } | undefined) => {
+    // Remover marcador anterior
+    if (caiMarkerRef.current) {
+      mapInstanceRef.current?.data.remove(caiMarkerRef.current);
+      caiMarkerRef.current = null;
+    }
+
+    if (!caiLocation || !mapInstanceRef.current) return;
+
+    // Crear un punto GeoJSON para el CAI
+    const caiGeoJson = {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [caiLocation.lng, caiLocation.lat]
+      },
+      properties: {
+        type: 'cai',
+        nombre: caiLocation.nombre
+      }
+    };
+
+    // Agregar el punto al mapa usando Data Layer
+    const features = mapInstanceRef.current.data.addGeoJson(caiGeoJson);
+    if (features && features.length > 0) {
+      caiMarkerRef.current = features[0];
+    }
+
+    console.log(`📍 CAI marcado: ${caiLocation.nombre} (${caiLocation.lat}, ${caiLocation.lng})`);
+  };
 
   const fetchQuadrantAtLocation = async (lat: number, lng: number) => {
     if (!mapInstanceRef.current) return;
@@ -39,6 +72,9 @@ const App: React.FC = () => {
         if (result.geometry) {
           mapInstanceRef.current.data.addGeoJson(result.geometry);
         }
+
+        // Actualizar marcador del CAI
+        updateCAIMarker(result.quadrant.caiLocation);
         
         // Actualizar estado
         setSelectedQuadrant(result.quadrant);
@@ -50,6 +86,7 @@ const App: React.FC = () => {
       } else {
         setSelectedQuadrant(null);
         setDataSource(null);
+        updateCAIMarker(undefined);
       }
     } catch (error) {
       console.error("Error en sincronización SIDENCO:", error);
@@ -83,13 +120,34 @@ const App: React.FC = () => {
 
         mapInstanceRef.current = map;
 
-        map.data.setStyle({
-          fillColor: '#afff00',
-          fillOpacity: 0.1,
-          strokeColor: '#afff00',
-          strokeWeight: 2,
-          strokeOpacity: 0.8,
-          visible: true
+        // Estilo dinámico: diferente para polígonos (cuadrantes) y puntos (CAIs)
+        map.data.setStyle((feature: any) => {
+          const geomType = feature.getGeometry()?.getType();
+          
+          if (geomType === 'Point') {
+            // Estilo para el marcador del CAI - usando símbolo de círculo (valor 0 en SymbolPath)
+            return {
+              icon: {
+                path: 0, // google.maps.SymbolPath.CIRCLE = 0
+                fillColor: '#3b82f6',
+                fillOpacity: 1,
+                strokeColor: '#ffffff',
+                strokeWeight: 3,
+                scale: 12
+              },
+              zIndex: 1000
+            };
+          }
+          
+          // Estilo para el polígono del cuadrante
+          return {
+            fillColor: '#afff00',
+            fillOpacity: 0.1,
+            strokeColor: '#afff00',
+            strokeWeight: 2,
+            strokeOpacity: 0.8,
+            visible: true
+          };
         });
 
         map.addListener('idle', () => {

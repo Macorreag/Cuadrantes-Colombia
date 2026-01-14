@@ -8,6 +8,18 @@ export interface QuadrantData {
     phone: string;
     initials: string;
   }>;
+  caiLocation?: {
+    lat: number;
+    lng: number;
+    nombre: string;
+  };
+}
+
+export interface CAIData {
+  cuadrante: string;
+  nombre_cai: string;
+  lat: number;
+  lng: number;
 }
 
 export interface SafetyScore {
