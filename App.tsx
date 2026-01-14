@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { setOptions, importLibrary } from '@googlemaps/js-api-loader';
 import { DARK_MAP_STYLE, BOGOTA_CENTER } from './constants';
-import { QuadrantData } from './types';
+import { QuadrantData, CAILocation } from './types';
 import QuadrantPanel from './components/QuadrantPanel';
 import BottomBar from './components/BottomBar';
 import { fetchQuadrantWithFallback, preloadOfflineData } from './services/quadrantService';
@@ -24,7 +24,7 @@ const App: React.FC = () => {
   }, []);
 
   // Función para crear el marcador del CAI usando Data Layer (mismo sistema que el polígono)
-  const updateCAIMarker = (caiLocation: { lat: number; lng: number; name: string } | undefined) => {
+  const updateCAIMarker = (caiLocation: CAILocation | undefined) => {
     // Remover marcador anterior
     if (caiMarkerRef.current) {
       mapInstanceRef.current?.data.remove(caiMarkerRef.current);
