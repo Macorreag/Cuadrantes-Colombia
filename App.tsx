@@ -10,10 +10,15 @@ import { fetchQuadrantWithFallback, preloadOfflineData } from './services/quadra
 // Tipo de fuente de datos
 type DataSource = 'official' | 'alternative' | 'offline' | null;
 
+// Debounce delay for map idle events (in milliseconds)
+// Prevents excessive API calls during rapid user interactions
+const IDLE_DEBOUNCE_DELAY_MS = 300;
+
 const App: React.FC = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const caiMarkerRef = useRef<any>(null);
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [selectedQuadrant, setSelectedQuadrant] = useState<QuadrantData | null>(null);
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState<DataSource>(null);
@@ -150,9 +155,21 @@ const App: React.FC = () => {
           };
         });
 
+        // Optimization: Debounce rapid map movements
+        // The 'idle' event fires when the map stops moving, but users often
+        // perform rapid sequential movements (pan-zoom-pan). This debounce
+        // ensures we only fetch data after the user truly pauses interaction.
         map.addListener('idle', () => {
-          const center = map.getCenter();
-          fetchQuadrantAtLocation(center.lat(), center.lng());
+          // Clear any existing timer
+          if (debounceTimerRef.current) {
+            clearTimeout(debounceTimerRef.current);
+          }
+          
+          // Set a new timer to fetch data after true inactivity
+          debounceTimerRef.current = setTimeout(() => {
+            const center = map.getCenter();
+            fetchQuadrantAtLocation(center.lat(), center.lng());
+          }, IDLE_DEBOUNCE_DELAY_MS);
         });
 
       } catch (e) {
@@ -161,6 +178,13 @@ const App: React.FC = () => {
     };
 
     initMap();
+    
+    // Cleanup: clear timer on unmount
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
   }, []);
 
   return (
