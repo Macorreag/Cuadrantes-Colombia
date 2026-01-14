@@ -10,11 +10,15 @@ import { fetchQuadrantWithFallback, preloadOfflineData } from './services/quadra
 // Tipo de fuente de datos
 type DataSource = 'official' | 'alternative' | 'offline' | null;
 
+// Debounce delay for map idle events (in milliseconds)
+// Prevents excessive API calls during rapid user interactions
+const IDLE_DEBOUNCE_DELAY_MS = 300;
+
 const App: React.FC = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const caiMarkerRef = useRef<any>(null);
-  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const debounceTimerRef = useRef<number | null>(null);
   const [selectedQuadrant, setSelectedQuadrant] = useState<QuadrantData | null>(null);
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState<DataSource>(null);
@@ -161,11 +165,11 @@ const App: React.FC = () => {
             clearTimeout(debounceTimerRef.current);
           }
           
-          // Set a new timer to fetch data after 300ms of true inactivity
+          // Set a new timer to fetch data after true inactivity
           debounceTimerRef.current = setTimeout(() => {
             const center = map.getCenter();
             fetchQuadrantAtLocation(center.lat(), center.lng());
-          }, 300);
+          }, IDLE_DEBOUNCE_DELAY_MS) as unknown as number;
         });
 
       } catch (e) {
