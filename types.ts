@@ -11,7 +11,7 @@ export interface QuadrantData {
   caiLocation?: {
     lat: number;
     lng: number;
-    nombre: string;
+    name: string;
   };
 }
 

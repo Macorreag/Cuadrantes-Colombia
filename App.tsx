@@ -24,7 +24,7 @@ const App: React.FC = () => {
   }, []);
 
   // Función para crear el marcador del CAI usando Data Layer (mismo sistema que el polígono)
-  const updateCAIMarker = (caiLocation: { lat: number; lng: number; nombre: string } | undefined) => {
+  const updateCAIMarker = (caiLocation: { lat: number; lng: number; name: string } | undefined) => {
     // Remover marcador anterior
     if (caiMarkerRef.current) {
       mapInstanceRef.current?.data.remove(caiMarkerRef.current);
@@ -42,7 +42,7 @@ const App: React.FC = () => {
       },
       properties: {
         type: 'cai',
-        nombre: caiLocation.nombre
+        name: caiLocation.name
       }
     };
 
@@ -52,7 +52,7 @@ const App: React.FC = () => {
       caiMarkerRef.current = features[0];
     }
 
-    console.log(`📍 CAI marcado: ${caiLocation.nombre} (${caiLocation.lat}, ${caiLocation.lng})`);
+    console.log(`📍 CAI marcado: ${caiLocation.name} (${caiLocation.lat}, ${caiLocation.lng})`);
   };
 
   const fetchQuadrantAtLocation = async (lat: number, lng: number) => {

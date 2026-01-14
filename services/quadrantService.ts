@@ -179,13 +179,13 @@ async function fetchFromOfficialAPI(lat: number, lng: number): Promise<{ geometr
     const officersList = processPersonnel(personnelData.features || []);
 
     // Usar coordenadas directamente de las propiedades del cuadrante
-    let caiLocation: { lat: number; lng: number; nombre: string } | undefined;
+    let caiLocation: { lat: number; lng: number; name: string } | undefined;
     
     if (mainProps.LATITUD && mainProps.LONGITUD) {
       caiLocation = {
         lat: parseFloat(mainProps.LATITUD),
         lng: parseFloat(mainProps.LONGITUD),
-        nombre: caiName
+        name: caiName
       };
       console.log(`📍 CAI ubicado desde API oficial: (${caiLocation.lat}, ${caiLocation.lng})`);
     } else {
@@ -267,13 +267,13 @@ async function fetchFromAlternativeAPI(lat: number, lng: number): Promise<{ geom
     }
 
     // Usar coordenadas directamente de las propiedades del cuadrante
-    let caiLocation: { lat: number; lng: number; nombre: string } | undefined;
+    let caiLocation: { lat: number; lng: number; name: string } | undefined;
     
     if (props.LATITUD && props.LONGITUD) {
       caiLocation = {
         lat: parseFloat(props.LATITUD),
         lng: parseFloat(props.LONGITUD),
-        nombre: props.DESCRIPCION || props.CUAD || 'CAI'
+        name: props.DESCRIPCION || props.CUAD || 'CAI'
       };
       console.log(`📍 CAI ubicado desde API: (${caiLocation.lat}, ${caiLocation.lng})`);
     } else {
@@ -303,7 +303,7 @@ async function fetchFromAlternativeAPI(lat: number, lng: number): Promise<{ geom
 /**
  * Encuentra las coordenadas del CAI en el personal offline
  */
-function findCAILocationFromPersonnel(quadrantId: string): { lat: number; lng: number; nombre: string } | undefined {
+function findCAILocationFromPersonnel(quadrantId: string): { lat: number; lng: number; name: string } | undefined {
   if (!offlinePersonal) return undefined;
 
   // Buscar personal que coincida con este cuadrante
@@ -317,7 +317,7 @@ function findCAILocationFromPersonnel(quadrantId: string): { lat: number; lng: n
     return {
       lat: match.lat,
       lng: match.lng,
-      nombre: match.cai || 'CAI'
+      name: match.cai || 'CAI'
     };
   }
 
@@ -346,7 +346,7 @@ async function fetchFromOfflineData(lat: number, lng: number): Promise<{ geometr
 
         // Buscar personal asociado
         let officers: any[] = [];
-        let caiLocation: { lat: number; lng: number; nombre: string } | undefined;
+        let caiLocation: { lat: number; lng: number; name: string } | undefined;
 
         if (offlinePersonal) {
           const quadrantSuffix = quadrantId.split('-').pop() || '';
@@ -362,9 +362,9 @@ async function fetchFromOfflineData(lat: number, lng: number): Promise<{ geometr
             caiLocation = {
               lat: personnelWithCoords.lat,
               lng: personnelWithCoords.lng,
-              nombre: personnelWithCoords.cai || props.DESCRIPCION || 'CAI'
+              name: personnelWithCoords.cai || props.DESCRIPCION || 'CAI'
             };
-            console.log(`📍 CAI ubicado: ${caiLocation.nombre} (${caiLocation.lat}, ${caiLocation.lng})`);
+            console.log(`📍 CAI ubicado: ${caiLocation.name} (${caiLocation.lat}, ${caiLocation.lng})`);
           }
         }
 
@@ -373,7 +373,7 @@ async function fetchFromOfflineData(lat: number, lng: number): Promise<{ geometr
           caiLocation = {
             lat: parseFloat(props.LATITUD),
             lng: parseFloat(props.LONGITUD),
-            nombre: props.DESCRIPCION || props.CUAD || 'CAI'
+            name: props.DESCRIPCION || props.CUAD || 'CAI'
           };
         }
 
