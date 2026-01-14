@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+"""
+Development utility script to inspect GeoJSON properties.
+This script is for debugging purposes only.
+Consider removing before production deployment.
+"""
 import json
 
 with open('public/data/cuadrantes_colombia.min.geojson', 'r') as f:

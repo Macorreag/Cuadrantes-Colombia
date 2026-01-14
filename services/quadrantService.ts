@@ -301,15 +301,35 @@ async function fetchFromAlternativeAPI(lat: number, lng: number): Promise<{ geom
 }
 
 /**
+ * Verifica si dos identificadores de cuadrante coinciden exactamente
+ */
+function matchesQuadrantId(personnelCuadrante: string | undefined, quadrantId: string): boolean {
+  if (!personnelCuadrante) return false;
+  
+  // Normalizar ambos identificadores
+  const normalizedPersonnel = personnelCuadrante.trim().toUpperCase();
+  const normalizedQuadrant = quadrantId.trim().toUpperCase();
+  
+  // Coincidencia exacta
+  if (normalizedPersonnel === normalizedQuadrant) return true;
+  
+  // Extraer sufijos y comparar exactamente
+  const personnelSuffix = normalizedPersonnel.split('-').pop() || '';
+  const quadrantSuffix = normalizedQuadrant.split('-').pop() || '';
+  
+  // Solo coincide si los sufijos son exactamente iguales
+  return personnelSuffix === quadrantSuffix && personnelSuffix !== '';
+}
+
+/**
  * Encuentra las coordenadas del CAI en el personal offline
  */
 function findCAILocationFromPersonnel(quadrantId: string): CAILocation | undefined {
   if (!offlinePersonal) return undefined;
 
-  // Buscar personal que coincida con este cuadrante
-  const quadrantSuffix = quadrantId.split('-').pop() || '';
+  // Buscar personal que coincida exactamente con este cuadrante
   const match = offlinePersonal.find((p: any) => 
-    p.cuadrante?.includes(quadrantSuffix) && p.lat && p.lng
+    matchesQuadrantId(p.cuadrante, quadrantId) && p.lat && p.lng
   );
 
   if (match) {
@@ -348,33 +368,36 @@ async function fetchFromOfflineData(lat: number, lng: number): Promise<{ geometr
         let officers: any[] = [];
         let caiLocation: CAILocation | undefined;
 
-        if (offlinePersonal) {
-          const quadrantSuffix = quadrantId.split('-').pop() || '';
-          const matchingPersonnel = offlinePersonal.filter((p: any) => 
-            p.cuadrante?.includes(quadrantSuffix) ||
-            p.cai?.includes(quadrantSuffix)
-          );
-          officers = processPersonnel(matchingPersonnel);
-
-          // Obtener coordenadas del primer personal que las tenga
-          const personnelWithCoords = matchingPersonnel.find((p: any) => p.lat && p.lng);
-          if (personnelWithCoords) {
-            caiLocation = {
-              lat: personnelWithCoords.lat,
-              lng: personnelWithCoords.lng,
-              name: personnelWithCoords.cai || props.DESCRIPCION || 'CAI'
-            };
-            console.log(`📍 CAI ubicado: ${caiLocation.name} (${caiLocation.lat}, ${caiLocation.lng})`);
-          }
-        }
-
-        // Si no hay coordenadas del personal, intentar usar las del cuadrante
-        if (!caiLocation && props.LATITUD && props.LONGITUD) {
+        // 1. Primero intentar coordenadas del cuadrante (consistente con APIs)
+        if (props.LATITUD && props.LONGITUD) {
           caiLocation = {
             lat: parseFloat(props.LATITUD),
             lng: parseFloat(props.LONGITUD),
             name: props.DESCRIPCION || props.CUAD || 'CAI'
           };
+          console.log(`📍 CAI ubicado desde propiedades: ${caiLocation.name} (${caiLocation.lat}, ${caiLocation.lng})`);
+        }
+
+        // Procesar personal
+        if (offlinePersonal) {
+          const matchingPersonnel = offlinePersonal.filter((p: any) => 
+            matchesQuadrantId(p.cuadrante, quadrantId) ||
+            matchesQuadrantId(p.cai, quadrantId)
+          );
+          officers = processPersonnel(matchingPersonnel);
+
+          // 2. Fallback: obtener coordenadas del personal si no hay del cuadrante
+          if (!caiLocation) {
+            const personnelWithCoords = matchingPersonnel.find((p: any) => p.lat && p.lng);
+            if (personnelWithCoords) {
+              caiLocation = {
+                lat: personnelWithCoords.lat,
+                lng: personnelWithCoords.lng,
+                name: personnelWithCoords.cai || props.DESCRIPCION || 'CAI'
+              };
+              console.log(`📍 CAI ubicado desde personal: ${caiLocation.name} (${caiLocation.lat}, ${caiLocation.lng})`);
+            }
+          }
         }
 
         return {

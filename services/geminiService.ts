@@ -3,7 +3,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { SafetyScore } from "../types";
 
 export const getSafetyAnalysis = async (neighborhoodName: string, quadrantId: string): Promise<SafetyScore> => {
-  // Always use named parameter for apiKey and obtain it exclusively from process.env.API_KEY
+  // Usar parámetro nombrado para apiKey y obtenerlo exclusivamente de process.env.API_KEY
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   
   // Use Gemini 3 Pro with thinking for complex safety analysis
@@ -37,14 +37,14 @@ export const getSafetyAnalysis = async (neighborhoodName: string, quadrantId: st
       },
     });
 
-    // Access .text property directly (not a method). 
-    // If search grounding is used, the response.text might contain citations that break JSON.
+    // Acceder a la propiedad .text directamente (no es un método).
+    // Si se usa search grounding, response.text puede contener citas que rompen el JSON.
     const text = response.text || '{}';
     let data;
     try {
       data = JSON.parse(text);
     } catch (e) {
-      // Fallback: Attempt to extract JSON block if search citations interfere with parsing
+      // Respaldo: Intentar extraer bloque JSON si las citas de búsqueda interfieren con el parsing
       const jsonMatch = text.match(/\{[\s\S]*\}/);
       data = jsonMatch ? JSON.parse(jsonMatch[0]) : {};
     }

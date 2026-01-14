@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Phone, Shield, ChevronDown, ChevronUp, Radio, User, MapPin, ExternalLink } from 'lucide-react';
+import { Phone, Shield, ChevronDown, ChevronUp, Radio, User, MapPin } from 'lucide-react';
 import { QuadrantData } from '../types';
 
 interface Props {
