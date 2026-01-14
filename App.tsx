@@ -151,19 +151,21 @@ const App: React.FC = () => {
           };
         });
 
-        // Debounce mechanism: only fetch quadrant data after user stops moving
-        // This prevents unnecessary calculations during drag operations
+        // Optimization: Debounce rapid map movements
+        // The 'idle' event fires when the map stops moving, but users often
+        // perform rapid sequential movements (pan-zoom-pan). This debounce
+        // ensures we only fetch data after the user truly pauses interaction.
         map.addListener('idle', () => {
           // Clear any existing timer
           if (debounceTimerRef.current) {
             clearTimeout(debounceTimerRef.current);
           }
           
-          // Set a new timer to fetch data after 500ms of inactivity
+          // Set a new timer to fetch data after 300ms of true inactivity
           debounceTimerRef.current = setTimeout(() => {
             const center = map.getCenter();
             fetchQuadrantAtLocation(center.lat(), center.lng());
-          }, 500);
+          }, 300);
         });
 
       } catch (e) {
