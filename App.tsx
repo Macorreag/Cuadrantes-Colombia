@@ -18,7 +18,7 @@ const App: React.FC = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const caiMarkerRef = useRef<any>(null);
-  const debounceTimerRef = useRef<number | null>(null);
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [selectedQuadrant, setSelectedQuadrant] = useState<QuadrantData | null>(null);
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState<DataSource>(null);
@@ -169,7 +169,7 @@ const App: React.FC = () => {
           debounceTimerRef.current = setTimeout(() => {
             const center = map.getCenter();
             fetchQuadrantAtLocation(center.lat(), center.lng());
-          }, IDLE_DEBOUNCE_DELAY_MS) as unknown as number;
+          }, IDLE_DEBOUNCE_DELAY_MS);
         });
 
       } catch (e) {
