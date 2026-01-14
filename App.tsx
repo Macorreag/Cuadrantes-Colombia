@@ -14,6 +14,7 @@ const App: React.FC = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const caiMarkerRef = useRef<any>(null);
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [selectedQuadrant, setSelectedQuadrant] = useState<QuadrantData | null>(null);
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState<DataSource>(null);
@@ -150,9 +151,19 @@ const App: React.FC = () => {
           };
         });
 
+        // Debounce mechanism: only fetch quadrant data after user stops moving
+        // This prevents unnecessary calculations during drag operations
         map.addListener('idle', () => {
-          const center = map.getCenter();
-          fetchQuadrantAtLocation(center.lat(), center.lng());
+          // Clear any existing timer
+          if (debounceTimerRef.current) {
+            clearTimeout(debounceTimerRef.current);
+          }
+          
+          // Set a new timer to fetch data after 500ms of inactivity
+          debounceTimerRef.current = setTimeout(() => {
+            const center = map.getCenter();
+            fetchQuadrantAtLocation(center.lat(), center.lng());
+          }, 500);
         });
 
       } catch (e) {
@@ -161,6 +172,13 @@ const App: React.FC = () => {
     };
 
     initMap();
+    
+    // Cleanup: clear timer on unmount
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
   }, []);
 
   return (
