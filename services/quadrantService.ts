@@ -3,7 +3,7 @@
  * Primero intenta la API oficial, si falla usa datos offline
  */
 
-import { QuadrantData } from '../types';
+import { QuadrantData, CAILocation } from '../types';
 import * as turf from '@turf/turf';
 
 // URLs de la API oficial
@@ -179,7 +179,7 @@ async function fetchFromOfficialAPI(lat: number, lng: number): Promise<{ geometr
     const officersList = processPersonnel(personnelData.features || []);
 
     // Usar coordenadas directamente de las propiedades del cuadrante
-    let caiLocation: { lat: number; lng: number; name: string } | undefined;
+    let caiLocation: CAILocation | undefined;
     
     if (mainProps.LATITUD && mainProps.LONGITUD) {
       caiLocation = {
@@ -267,7 +267,7 @@ async function fetchFromAlternativeAPI(lat: number, lng: number): Promise<{ geom
     }
 
     // Usar coordenadas directamente de las propiedades del cuadrante
-    let caiLocation: { lat: number; lng: number; name: string } | undefined;
+    let caiLocation: CAILocation | undefined;
     
     if (props.LATITUD && props.LONGITUD) {
       caiLocation = {
@@ -303,7 +303,7 @@ async function fetchFromAlternativeAPI(lat: number, lng: number): Promise<{ geom
 /**
  * Encuentra las coordenadas del CAI en el personal offline
  */
-function findCAILocationFromPersonnel(quadrantId: string): { lat: number; lng: number; name: string } | undefined {
+function findCAILocationFromPersonnel(quadrantId: string): CAILocation | undefined {
   if (!offlinePersonal) return undefined;
 
   // Buscar personal que coincida con este cuadrante
@@ -346,7 +346,7 @@ async function fetchFromOfflineData(lat: number, lng: number): Promise<{ geometr
 
         // Buscar personal asociado
         let officers: any[] = [];
-        let caiLocation: { lat: number; lng: number; name: string } | undefined;
+        let caiLocation: CAILocation | undefined;
 
         if (offlinePersonal) {
           const quadrantSuffix = quadrantId.split('-').pop() || '';
