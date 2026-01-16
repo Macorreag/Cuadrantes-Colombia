@@ -9,6 +9,25 @@ export interface QuadrantData {
     initials: string;
   }>;
   caiLocation?: CAILocation;
+  // Información de la Estación de Policía asociada
+  estacionPolicia?: {
+    nombre: string;
+    direccion?: string;
+    telefono?: string;
+    email?: string;
+    lat: number;
+    lng: number;
+  };
+  // Jerarquía MNVCC (Modelo Nacional de Vigilancia Comunitaria por Cuadrantes)
+  jerarquia?: {
+    departamento?: string;   // Ej: "METROPOLITANA DE BOGOTA"
+    estacion?: string;       // Ej: "ESTACION DE POLICIA USAQUEN"
+    codigoEstacion?: string; // Ej: "E01"
+    codigoCAI?: string;      // Ej: "C02"
+    telefonoCuadrante?: string;
+  };
+  // Fuente de datos utilizada para obtener la ubicación del CAI
+  dataSource?: 'SDSCJ' | 'WebMap' | 'SODA' | 'Fallback' | 'API';
 }
 
 export interface CAILocation {

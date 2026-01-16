@@ -1,10 +1,14 @@
 /**
  * Servicio de Cuadrantes con Fallback
  * Primero intenta la API oficial, si falla usa datos offline
+ * 
+ * IMPORTANTE: Las ubicaciones de CAIs ahora se obtienen desde el servicio caiService.ts
+ * que usa datos reales de ArcGIS WebMap, no del centroide del cuadrante.
  */
 
 import { QuadrantData, CAILocation } from '../types';
 import * as turf from '@turf/turf';
+import { getCAILocationForQuadrant, preloadCAIs, getEstacionFromSDSCJ } from './caiService';
 
 // URLs de la API oficial
 const MNVCC_BASE_URL = "https://utility.arcgis.com/usrsvcs/servers/79feadae6f374b1882eb87e6983e8452/rest/services/CAPAS/MNVCC_CUADRANTES/FeatureServer";
@@ -116,6 +120,64 @@ function processPersonnel(personnelFeatures: any[]): any[] {
 }
 
 /**
+ * Extrae jerarquía MNVCC de un código de cuadrante
+ * Basado en el informe técnico - Sección 2.2 (Código SIVICC)
+ * Patrón: UUUUUMNVCCDXXEYY(S/C)ZZNNN
+ */
+function extractJerarquia(codigoCuadrante: string, props: Record<string, any>): {
+  departamento?: string;
+  estacion?: string;
+  codigoEstacion?: string;
+  codigoCAI?: string;
+  telefonoCuadrante?: string;
+} {
+  const result: ReturnType<typeof extractJerarquia> = {};
+  
+  // Intentar extraer desde el código SIVICC
+  const normalized = codigoCuadrante.toUpperCase().trim();
+  
+  // Patrón completo SIVICC
+  const siviccMatch = normalized.match(
+    /^([A-Z]{5})?(MNVCC)?([CDS]\d{2})?(E\d{2})(C\d{2}|S\d{2})?(\d{6})?$/
+  );
+  
+  if (siviccMatch) {
+    const [, unidad, , distrito, estacion, cai] = siviccMatch;
+    
+    // Mapear códigos de unidad a nombres de departamento
+    const unidadToDepto: Record<string, string> = {
+      'MEBOG': 'METROPOLITANA DE BOGOTA',
+      'DEANT': 'DEPARTAMENTO DE POLICIA ANTIOQUIA',
+      'MEAME': 'METROPOLITANA DEL VALLE DE ABURRA',
+      'MECAL': 'METROPOLITANA DE SANTIAGO DE CALI',
+      'MEBAR': 'METROPOLITANA DE BARRANQUILLA',
+      'DEBUC': 'DEPARTAMENTO DE POLICIA BUCARAMANGA',
+      'DEAMA': 'DEPARTAMENTO DE POLICIA AMAZONAS'
+    };
+    
+    if (unidad) {
+      result.departamento = unidadToDepto[unidad] || unidad;
+    }
+    
+    result.codigoEstacion = estacion;
+    result.codigoCAI = cai;
+  }
+  
+  // Complementar desde propiedades de la API
+  if (props.UNIDAD && !result.estacion) {
+    result.estacion = props.UNIDAD;
+  }
+  if (props.DEPARTAMENTO && !result.departamento) {
+    result.departamento = props.DEPARTAMENTO;
+  }
+  if (props.TELEFONO_CUAD || props.TELEFONO) {
+    result.telefonoCuadrante = props.TELEFONO_CUAD || props.TELEFONO;
+  }
+  
+  return result;
+}
+
+/**
  * Busca cuadrante en la API oficial
  */
 async function fetchFromOfficialAPI(lat: number, lng: number): Promise<{ geometry: any; quadrant: QuadrantData } | null> {
@@ -178,23 +240,65 @@ async function fetchFromOfficialAPI(lat: number, lng: number): Promise<{ geometr
 
     const officersList = processPersonnel(personnelData.features || []);
 
-    // Usar coordenadas directamente de las propiedades del cuadrante
+    // Usar coordenadas REALES del CAI desde la arquitectura de fusión de datos
     let caiLocation: CAILocation | undefined;
+    let dataSource: 'SDSCJ' | 'WebMap' | 'SODA' | 'Fallback' | 'API' = 'API';
     
-    if (mainProps.LATITUD && mainProps.LONGITUD) {
+    // Calcular centro del cuadrante para búsqueda de CAI cercano
+    const quadrantCenter = geomData.features[0].geometry ? 
+      turf.centroid(geomData.features[0]).geometry.coordinates : null;
+    
+    // Buscar ubicación real del CAI usando arquitectura de fusión
+    caiLocation = await getCAILocationForQuadrant(
+      quadrantId,
+      quadrantCenter ? { lat: quadrantCenter[1], lng: quadrantCenter[0] } : undefined
+    );
+    
+    if (caiLocation) {
+      // Detectar fuente basándonos en los logs (la arquitectura lo maneja internamente)
+      dataSource = quadrantId.toUpperCase().includes('MEBOG') ? 'SDSCJ' : 'WebMap';
+    }
+
+    // Fallback: usar coordenadas de la API oficial si no se encuentra
+    if (!caiLocation && mainProps.LATITUD && mainProps.LONGITUD) {
       caiLocation = {
         lat: parseFloat(mainProps.LATITUD),
         lng: parseFloat(mainProps.LONGITUD),
         name: caiName
       };
-      console.log(`📍 CAI ubicado desde API oficial: (${caiLocation.lat}, ${caiLocation.lng})`);
-    } else {
+      dataSource = 'API';
+      console.log(`📍 CAI ubicado desde API oficial (fallback): (${caiLocation.lat}, ${caiLocation.lng})`);
+    } else if (!caiLocation) {
       // Si no hay coordenadas en el API, buscar en personal offline
       await loadOfflineData();
       caiLocation = findCAILocationFromPersonnel(quadrantId);
+      dataSource = 'Fallback';
       if (!caiLocation) {
         console.log('⚠️ Sin coordenadas disponibles para CAI');
       }
+    }
+
+    // Extraer jerarquía del código SIVICC
+    const jerarquia = extractJerarquia(quadrantId, mainProps);
+
+    // Obtener información de la Estación de Policía asociada
+    let estacionPolicia: QuadrantData['estacionPolicia'];
+    try {
+      const estacion = await getEstacionFromSDSCJ(quadrantId);
+      console.log('📊 [Official] Estación obtenida:', estacion);
+      if (estacion) {
+        estacionPolicia = {
+          nombre: estacion.nombre,
+          direccion: estacion.direccion,
+          telefono: estacion.telefono,
+          email: estacion.email,
+          lat: estacion.latitud,
+          lng: estacion.longitud
+        };
+        console.log('📊 [Official] estacionPolicia mapeada:', estacionPolicia);
+      }
+    } catch (e) {
+      console.warn('⚠️ No se pudo obtener estación de policía', e);
     }
 
     return {
@@ -204,7 +308,10 @@ async function fetchFromOfficialAPI(lat: number, lng: number): Promise<{ geometr
         name: caiName,
         cai: caiName,
         officers: officersList,
-        caiLocation: caiLocation
+        caiLocation: caiLocation,
+        estacionPolicia: estacionPolicia,
+        jerarquia: jerarquia,
+        dataSource: dataSource
       }
     };
   } catch (error) {
@@ -266,23 +373,64 @@ async function fetchFromAlternativeAPI(lat: number, lng: number): Promise<{ geom
       console.warn('No se pudo obtener personal del servicio alternativo');
     }
 
-    // Usar coordenadas directamente de las propiedades del cuadrante
+    // Usar coordenadas REALES del CAI desde la arquitectura de fusión
     let caiLocation: CAILocation | undefined;
+    let dataSource: 'SDSCJ' | 'WebMap' | 'SODA' | 'Fallback' | 'API' = 'API';
     
-    if (props.LATITUD && props.LONGITUD) {
+    // Calcular centro del cuadrante para búsqueda de CAI cercano
+    const quadrantCenter = data.features?.[0]?.geometry ? 
+      turf.centroid(data.features[0]).geometry.coordinates : null;
+    
+    // Buscar ubicación real del CAI usando arquitectura de fusión
+    caiLocation = await getCAILocationForQuadrant(
+      quadrantId,
+      quadrantCenter ? { lat: quadrantCenter[1], lng: quadrantCenter[0] } : undefined
+    );
+    
+    if (caiLocation) {
+      dataSource = quadrantId.toUpperCase().includes('MEBOG') ? 'SDSCJ' : 'WebMap';
+    }
+    
+    // Fallback: usar coordenadas de la API si no se encuentra
+    if (!caiLocation && props.LATITUD && props.LONGITUD) {
       caiLocation = {
         lat: parseFloat(props.LATITUD),
         lng: parseFloat(props.LONGITUD),
         name: props.DESCRIPCION || props.CUAD || 'CAI'
       };
-      console.log(`📍 CAI ubicado desde API: (${caiLocation.lat}, ${caiLocation.lng})`);
-    } else {
+      dataSource = 'API';
+      console.log(`📍 CAI ubicado desde API (fallback): (${caiLocation.lat}, ${caiLocation.lng})`);
+    } else if (!caiLocation) {
       // Si no hay coordenadas en el API, buscar en personal offline
       await loadOfflineData();
       caiLocation = findCAILocationFromPersonnel(quadrantId);
+      dataSource = 'Fallback';
       if (!caiLocation) {
         console.log('⚠️ Sin coordenadas disponibles para CAI');
       }
+    }
+
+    // Extraer jerarquía del código SIVICC
+    const jerarquia = extractJerarquia(quadrantId, props);
+
+    // Obtener información de la Estación de Policía asociada
+    let estacionPolicia: QuadrantData['estacionPolicia'];
+    try {
+      const estacion = await getEstacionFromSDSCJ(quadrantId);
+      console.log('📊 [Alternative] Estación obtenida:', estacion);
+      if (estacion) {
+        estacionPolicia = {
+          nombre: estacion.nombre,
+          direccion: estacion.direccion,
+          telefono: estacion.telefono,
+          email: estacion.email,
+          lat: estacion.latitud,
+          lng: estacion.longitud
+        };
+        console.log('📊 [Alternative] estacionPolicia mapeada:', estacionPolicia);
+      }
+    } catch (e) {
+      console.warn('⚠️ No se pudo obtener estación de policía', e);
     }
 
     return {
@@ -292,7 +440,10 @@ async function fetchFromAlternativeAPI(lat: number, lng: number): Promise<{ geom
         name: props.DESCRIPCION || props.CUAD || 'Cuadrante',
         cai: props.DESCRIPCION || props.CUAD || 'CAI',
         officers: officers,
-        caiLocation: caiLocation
+        caiLocation: caiLocation,
+        estacionPolicia: estacionPolicia,
+        jerarquia: jerarquia,
+        dataSource: dataSource
       }
     };
   } catch (error) {
@@ -368,14 +519,24 @@ async function fetchFromOfflineData(lat: number, lng: number): Promise<{ geometr
         let officers: any[] = [];
         let caiLocation: CAILocation | undefined;
 
-        // 1. Primero intentar coordenadas del cuadrante (consistente con APIs)
-        if (props.LATITUD && props.LONGITUD) {
+        // Calcular centro del cuadrante para búsqueda de CAI
+        const quadrantCenter = feature.geometry ? 
+          turf.centroid(feature).geometry.coordinates : null;
+
+        // 1. Buscar ubicación REAL del CAI desde ArcGIS
+        caiLocation = await getCAILocationForQuadrant(
+          quadrantId,
+          quadrantCenter ? { lat: quadrantCenter[1], lng: quadrantCenter[0] } : undefined
+        );
+
+        // 2. Fallback: coordenadas del cuadrante (centroide, no recomendado)
+        if (!caiLocation && props.LATITUD && props.LONGITUD) {
           caiLocation = {
             lat: parseFloat(props.LATITUD),
             lng: parseFloat(props.LONGITUD),
             name: props.DESCRIPCION || props.CUAD || 'CAI'
           };
-          console.log(`📍 CAI ubicado desde propiedades: ${caiLocation.name} (${caiLocation.lat}, ${caiLocation.lng})`);
+          console.log(`📍 CAI ubicado desde propiedades (fallback): ${caiLocation.name}`);
         }
 
         // Procesar personal
@@ -386,7 +547,7 @@ async function fetchFromOfflineData(lat: number, lng: number): Promise<{ geometr
           );
           officers = processPersonnel(matchingPersonnel);
 
-          // 2. Fallback: obtener coordenadas del personal si no hay del cuadrante
+          // 3. Fallback final: obtener coordenadas del personal si no hay del CAI
           if (!caiLocation) {
             const personnelWithCoords = matchingPersonnel.find((p: any) => p.lat && p.lng);
             if (personnelWithCoords) {
@@ -395,7 +556,7 @@ async function fetchFromOfflineData(lat: number, lng: number): Promise<{ geometr
                 lng: personnelWithCoords.lng,
                 name: personnelWithCoords.cai || props.DESCRIPCION || 'CAI'
               };
-              console.log(`📍 CAI ubicado desde personal: ${caiLocation.name} (${caiLocation.lat}, ${caiLocation.lng})`);
+              console.log(`📍 CAI ubicado desde personal (fallback): ${caiLocation.name}`);
             }
           }
         }
@@ -482,7 +643,10 @@ export function getConnectionStatus(): 'online' | 'alternative' | 'offline' {
  * Pre-cargar datos offline para mejor rendimiento
  */
 export async function preloadOfflineData(): Promise<void> {
-  await loadOfflineData();
+  await Promise.all([
+    loadOfflineData(),
+    preloadCAIs() // También pre-cargar CAIs reales de ArcGIS
+  ]);
 }
 
 export { processPersonnel };

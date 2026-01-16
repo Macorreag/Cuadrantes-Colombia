@@ -1,0 +1,1122 @@
+{
+  "E01-01": {
+    "lat": 4.763921,
+    "lng": -74.024219,
+    "nombre": "CAI Codito",
+    "direccion": "KR 4 CL 187A BIS",
+    "telefono": "6718230"
+  },
+  "E01-07": {
+    "lat": 4.76444157,
+    "lng": -74.04036085,
+    "nombre": "CAI Verbenal",
+    "direccion": "CL 187 KR 19",
+    "telefono": "6730111"
+  },
+  "E10-21": {
+    "lat": 4.682945,
+    "lng": -74.090409,
+    "nombre": "CAI Las Ferias",
+    "direccion": "AC 72 KR 69J",
+    "telefono": "6603703"
+  },
+  "E03-38": {
+    "lat": 4.59168,
+    "lng": -74.064492,
+    "nombre": "CAI Mirador Choachi",
+    "direccion": "KM 1 CHOACHI",
+    "telefono": "2810561"
+  },
+  "E01-19": {
+    "lat": 4.708471,
+    "lng": -74.02893261,
+    "nombre": "CAI Lisboa",
+    "direccion": "CL 130 AK 7",
+    "telefono": "2747918"
+  },
+  "E02-06": {
+    "lat": 4.645764,
+    "lng": -74.062216,
+    "nombre": "CAI Chapinero",
+    "direccion": "CL 60 KR 9",
+    "telefono": "2177472"
+  },
+  "E03-39": {
+    "lat": 4.585298,
+    "lng": -74.067762,
+    "nombre": "CAI Laches",
+    "direccion": "DG 4 KR 8 ESTE",
+    "telefono": "2896756"
+  },
+  "E11-61": {
+    "lat": 4.711654,
+    "lng": -74.057354,
+    "nombre": "CAI Tierra Linda",
+    "direccion": "CL 127C KR 50",
+    "telefono": "2581128"
+  },
+  "E10-53": {
+    "lat": 4.716907,
+    "lng": -74.122948,
+    "nombre": "CAI Villas De Granada",
+    "direccion": "KR 112A KR 77A",
+    "telefono": "2295058"
+  },
+  "E10-48": {
+    "lat": 4.681342,
+    "lng": -74.107592,
+    "nombre": "CAI Villa Luz",
+    "direccion": "KR 77A CL 6AB",
+    "telefono": "2510703"
+  },
+  "E09-02": {
+    "lat": 4.65146999,
+    "lng": -74.11792706,
+    "nombre": "CAI Granjas",
+    "direccion": "KR 69B CL 21A",
+    "telefono": "4127886"
+  },
+  "E13-39": {
+    "lat": 4.62361851,
+    "lng": -74.07136544,
+    "nombre": "CAI Teusaquillo",
+    "direccion": "CL 34 KR 16",
+    "telefono": "2885252"
+  },
+  "E16-07": {
+    "lat": 4.59621,
+    "lng": -74.135443,
+    "nombre": "CAI Alquería",
+    "direccion": "CL 43 SUR KR 52C",
+    "telefono": "2046738"
+  },
+  "E08-43": {
+    "lat": 4.635466,
+    "lng": -74.129573,
+    "nombre": "CAI Marsella",
+    "direccion": "TV 70 CL 9A",
+    "telefono": "4476681"
+  },
+  "E11-36": {
+    "lat": 4.81592072,
+    "lng": -74.03631231,
+    "nombre": "Sin estructura orgánica",
+    "direccion": "AUTONORTE CL 235",
+    "telefono": "3002009444"
+  },
+  "E07-76": {
+    "lat": 4.6243766,
+    "lng": -74.21249463,
+    "nombre": "Sin estructura orgánica",
+    "direccion": "CALLE 85 SUR 94 35",
+    "telefono": "7234049"
+  },
+  "E04-34": {
+    "lat": 4.53704,
+    "lng": -74.086073,
+    "nombre": "CAI Altamira",
+    "direccion": "DG 48 SUR TV 13D ESTE",
+    "telefono": "3717461"
+  },
+  "E04-37": {
+    "lat": 4.532603,
+    "lng": -74.087139,
+    "nombre": "CAI Libertadores",
+    "direccion": "CL 56 SUR TV 14A ESTE",
+    "telefono": "3657914"
+  },
+  "E04-39": {
+    "lat": 4.517569,
+    "lng": -74.09001,
+    "nombre": "CAI Juan Rey",
+    "direccion": "TV 15 ESTE CL 74 SUR",
+    "telefono": "3655111"
+  },
+  "E19-44": {
+    "lat": 4.59146152,
+    "lng": -74.16786688,
+    "nombre": "CAI Perdomo",
+    "direccion": "CL 62A SUR KR 72",
+    "telefono": "7196339"
+  },
+  "E19-53": {
+    "lat": 4.577775,
+    "lng": -74.179348,
+    "nombre": "CAI Santo Domingo",
+    "direccion": "CL 69A SUR KR 77C",
+    "telefono": "7807304"
+  },
+  "E08-99": {
+    "lat": 4.619148,
+    "lng": -74.139036,
+    "nombre": "CAI Plaza De Las Américas",
+    "direccion": "AV BOYACA AV 1RO DE MAYO",
+    "telefono": "2904677"
+  },
+  "E18-12": {
+    "lat": 4.576569,
+    "lng": -74.110292,
+    "nombre": "CAI Gustavo Restrepo",
+    "direccion": "CL 31 SUR KR 13A BIS",
+    "telefono": "2091111"
+  },
+  "E04-56": {
+    "lat": 4.559258,
+    "lng": -74.091603,
+    "nombre": "CAI Bello Horizonte",
+    "direccion": "KR 3A ESTE CL 31C SUR",
+    "telefono": "3634652"
+  },
+  "E19-80": {
+    "lat": 4.56279079,
+    "lng": -74.14900722,
+    "nombre": "CAI San Francisco",
+    "direccion": "KR 20C CL 67 SUR",
+    "telefono": "7169661"
+  },
+  "E05-04": {
+    "lat": 4.49071385,
+    "lng": -74.11480596,
+    "nombre": "CAI Antonio José de Sucre",
+    "direccion": "KR 5BIS CL 111 SUR",
+    "telefono": "7632944"
+  },
+  "E04-50": {
+    "lat": 4.572588,
+    "lng": -74.092548,
+    "nombre": "CAI 20 De Julio",
+    "direccion": "CL 22A SUR KR 7",
+    "telefono": "2092509"
+  },
+  "E04-44": {
+    "lat": 4.555436,
+    "lng": -74.097366,
+    "nombre": "CAI Guacamayas",
+    "direccion": "KR 2A CL 37B SUR",
+    "telefono": "3296993"
+  },
+  "E04-29": {
+    "lat": 4.558067,
+    "lng": -74.083172,
+    "nombre": "CAI Ramajal",
+    "direccion": "CL 30C SUR KR 9A ESTE",
+    "telefono": "2066528"
+  },
+  "E04-24": {
+    "lat": 4.544227,
+    "lng": -74.095593,
+    "nombre": "CAI Victoria",
+    "direccion": "CL 46A SUR KR 3F ESTE",
+    "telefono": "3620944"
+  },
+  "E19-13": {
+    "lat": 4.573274,
+    "lng": -74.153191,
+    "nombre": "CAI Candelaria",
+    "direccion": "DG 62 SUR KR 43C",
+    "telefono": "7151934"
+  },
+  "E19-01": {
+    "lat": 4.568414,
+    "lng": -74.162958,
+    "nombre": "CAI Arborizadora Alta",
+    "direccion": "KR 42 CL 73 SUR",
+    "telefono": "7318534"
+  },
+  "E19-37": {
+    "lat": 4.54930598,
+    "lng": -74.16328832,
+    "nombre": "CAI Paraíso",
+    "direccion": "CL 71P SUR KR 27L",
+    "telefono": "3296999"
+  },
+  "E19-16": {
+    "lat": 4.55722776,
+    "lng": -74.146446,
+    "nombre": "CAI Compartir",
+    "direccion": "CL 66 BIS SUR TV 18T",
+    "telefono": "7313924"
+  },
+  "E19-28": {
+    "lat": 4.553933,
+    "lng": -74.140936,
+    "nombre": "CAI Lucero",
+    "direccion": "DG 64 SUR KR 18J",
+    "telefono": "7658363"
+  },
+  "E19-60": {
+    "lat": 4.54697,
+    "lng": -74.14935,
+    "nombre": "CAI Vista Hermosa",
+    "direccion": "DG 71B SUR TV 18I",
+    "telefono": "7651121"
+  },
+  "E19-23": {
+    "lat": 4.5373094,
+    "lng": -74.14437857,
+    "nombre": "CAI La Joya",
+    "direccion": "CL 80A SUR TV 18B BIS B",
+    "telefono": "7661001"
+  },
+  "E05-10": {
+    "lat": 4.537335,
+    "lng": -74.1133779,
+    "nombre": "CAI Danubio Azul",
+    "direccion": "KR 2C DG 59 SUR",
+    "telefono": "2054890"
+  },
+  "E05-17": {
+    "lat": 4.53058013,
+    "lng": -74.1174694,
+    "nombre": "CAI Santa Marta",
+    "direccion": "KR 11 CL 6A BIS SUR",
+    "telefono": "7616269"
+  },
+  "E05-06": {
+    "lat": 4.5198267,
+    "lng": -74.1216499,
+    "nombre": "CAI La Aurora",
+    "direccion": "KR 14R CL 71F SUR",
+    "telefono": "7684004"
+  },
+  "E05-14": {
+    "lat": 4.50966508,
+    "lng": -74.10937307,
+    "nombre": "CAI Santa Librada",
+    "direccion": "KR 8 80 10 SUR",
+    "telefono": "7674263"
+  },
+  "E05-30": {
+    "lat": 4.5016094,
+    "lng": -74.1099313,
+    "nombre": "CAI Yomasa",
+    "direccion": "CL 91 SUR KR 5",
+    "telefono": "7734900"
+  },
+  "E05-25": {
+    "lat": 4.47188879,
+    "lng": -74.12546877,
+    "nombre": "CAI Usme",
+    "direccion": "CL 137B SUR KR 14A",
+    "telefono": "7660381"
+  },
+  "E18-01": {
+    "lat": 4.584483,
+    "lng": -74.107214,
+    "nombre": "CAI Centenario Olaya",
+    "direccion": "CL 24 SUR KR 24",
+    "telefono": "3733490"
+  },
+  "E19-52": {
+    "lat": 4.58592763,
+    "lng": -74.180483,
+    "nombre": "Sin estructura orgánica",
+    "direccion": "CL 63A SUR KR 77C",
+    "telefono": "3004681725"
+  },
+  "E07-12": {
+    "lat": 4.64119027,
+    "lng": -74.19328713,
+    "nombre": "Sin estructura orgánica",
+    "direccion": "KR 100 CL 55 SUR",
+    "telefono": "0"
+  },
+  "E01-43": {
+    "lat": 4.81982175,
+    "lng": -74.03107019,
+    "nombre": "Sin estructura orgánica",
+    "direccion": "AK 7 CL 245",
+    "telefono": "3013460937"
+  },
+  "E03-29": {
+    "lat": 4.587194,
+    "lng": -74.075331,
+    "nombre": "CAI Girardot",
+    "direccion": "CL 2A KR 2",
+    "telefono": "2801311"
+  },
+  "E03-32": {
+    "lat": 4.589295,
+    "lng": -74.071479,
+    "nombre": "CAI Guavio",
+    "direccion": "CL 6 KR 3 ESTE",
+    "telefono": "2460908"
+  },
+  "E03-36": {
+    "lat": 4.580615,
+    "lng": -74.072307,
+    "nombre": "CAI Dorado",
+    "direccion": "KR 8 ESTE CL 1A BIS",
+    "telefono": "3334782"
+  },
+  "E17-03": {
+    "lat": 4.595604,
+    "lng": -74.080285,
+    "nombre": "CAI Bolivia",
+    "direccion": "KR 10 CL 7",
+    "telefono": "2804466"
+  },
+  "E11-58": {
+    "lat": 4.755541,
+    "lng": -74.065116,
+    "nombre": "CAI San Jose",
+    "direccion": "AV BOYACA CL 169B",
+    "telefono": "6700066"
+  },
+  "E11-67": {
+    "lat": 4.753337,
+    "lng": -74.046974,
+    "nombre": "CAI Villa del Prado",
+    "direccion": "AUTOPISTA NORTE CL 172",
+    "telefono": "6716907"
+  },
+  "E11-40": {
+    "lat": 4.746347,
+    "lng": -74.054105,
+    "nombre": "CAI Mazuren",
+    "direccion": "CL 163B KR 54",
+    "telefono": "2581012"
+  },
+  "E11-76": {
+    "lat": 4.749708,
+    "lng": -74.083087,
+    "nombre": "CAI Pinar",
+    "direccion": "KR 92 CL 153",
+    "telefono": "6812338"
+  },
+  "E11-20": {
+    "lat": 4.753854,
+    "lng": -74.110215,
+    "nombre": "CAI Fontanar del Rio",
+    "direccion": "KR 136A  AC 145",
+    "telefono": "6936376"
+  },
+  "E11-01": {
+    "lat": 4.701034,
+    "lng": -74.065331,
+    "nombre": "CAI Alhambra",
+    "direccion": "AC 116 KR 54B",
+    "telefono": "6372437"
+  },
+  "E11-79": {
+    "lat": 4.692092,
+    "lng": -74.066182,
+    "nombre": "CAI Andes",
+    "direccion": "AV SUBA CL 104",
+    "telefono": "2266898"
+  },
+  "E11-103": {
+    "lat": 4.723542,
+    "lng": -74.091631,
+    "nombre": "CAI Rincón",
+    "direccion": "KR 93 CL 128C",
+    "telefono": "6821676"
+  },
+  "E11-24": {
+    "lat": 4.745372,
+    "lng": -74.107958,
+    "nombre": "CAI La Gaitana",
+    "direccion": "AC 139 TV 127",
+    "telefono": "3296996"
+  },
+  "E11-15": {
+    "lat": 4.721326,
+    "lng": -74.067691,
+    "nombre": "CAI Colina Campestre",
+    "direccion": "AK 58 CL 131",
+    "telefono": "2268881"
+  },
+  "E10-16": {
+    "lat": 4.72435577,
+    "lng": -74.12295218,
+    "nombre": "Sin estructura orgánica",
+    "direccion": "AC 80 KR 116B",
+    "telefono": "3017534302"
+  },
+  "E10-18": {
+    "lat": 4.72426109,
+    "lng": -74.11253068,
+    "nombre": "CAI Ciudadela Colsubsidio",
+    "direccion": "KR 111C CL 86A",
+    "telefono": "5521187"
+  },
+  "E10-07": {
+    "lat": 4.716035,
+    "lng": -74.102335,
+    "nombre": "CAI Bachue",
+    "direccion": "KR 95D CL 89",
+    "telefono": "2286621"
+  },
+  "E10-46": {
+    "lat": 4.71002971,
+    "lng": -74.09424925,
+    "nombre": "CAI La Serena",
+    "direccion": "AK 86 AC 90",
+    "telefono": "2245535"
+  },
+  "E10-10": {
+    "lat": 4.715744,
+    "lng": -74.141697,
+    "nombre": "CAI Engativá",
+    "direccion": "CL 64C KR 123",
+    "telefono": "4422228"
+  },
+  "E10-35": {
+    "lat": 4.706249,
+    "lng": -74.107274,
+    "nombre": "CAI Quirigua",
+    "direccion": "AC 80 TV 94",
+    "telefono": "2767763"
+  },
+  "E10-02": {
+    "lat": 4.7035,
+    "lng": -74.129137,
+    "nombre": "CAI Jaboque",
+    "direccion": "KR 110 BIS CL 67A",
+    "telefono": "4401016"
+  },
+  "E10-05": {
+    "lat": 4.690173,
+    "lng": -74.117279,
+    "nombre": "CAI Álamos",
+    "direccion": "TV 93 CL 64G",
+    "telefono": "2286621"
+  },
+  "E10-27": {
+    "lat": 4.693643,
+    "lng": -74.111056,
+    "nombre": "CAI Florida",
+    "direccion": "KR 90 CL 69A",
+    "telefono": "2769807"
+  },
+  "E10-42": {
+    "lat": 4.693616,
+    "lng": -74.096633,
+    "nombre": "CAI Santa María del Lago",
+    "direccion": "KR 76 CL 75",
+    "telefono": "2247211"
+  },
+  "E10-32": {
+    "lat": 4.67024,
+    "lng": -74.107491,
+    "nombre": "CAI Normandía",
+    "direccion": "AV BOYACA CL 52 BIS",
+    "telefono": "2955919"
+  },
+  "E09-29": {
+    "lat": 4.692899,
+    "lng": -74.166753,
+    "nombre": "Sin estructura orgánica",
+    "direccion": "AC 17 KR 134",
+    "telefono": "3002011329"
+  },
+  "E09-35": {
+    "lat": 4.6850396,
+    "lng": -74.1434996,
+    "nombre": "CAI Versalles",
+    "direccion": "KR 109 CL 23",
+    "telefono": "2987957"
+  },
+  "E09-31": {
+    "lat": 4.67071822,
+    "lng": -74.15649015,
+    "nombre": "CAI Sabana Grande",
+    "direccion": "KR 106 CL 14A",
+    "telefono": "4217431"
+  },
+  "E09-27": {
+    "lat": 4.681667,
+    "lng": -74.154435,
+    "nombre": "CAI Macarena",
+    "direccion": "CL 17 KR 114",
+    "telefono": "4156061"
+  },
+  "E09-40": {
+    "lat": 4.67112,
+    "lng": -74.138107,
+    "nombre": "CAI Santander",
+    "direccion": "KR 96C CL 20D",
+    "telefono": "4159215"
+  },
+  "E09-38": {
+    "lat": 4.66504106,
+    "lng": -74.11837405,
+    "nombre": "CAI Modelia",
+    "direccion": "AC 24 KR 74",
+    "telefono": "4107676"
+  },
+  "E09-05": {
+    "lat": 4.661898,
+    "lng": -74.127171,
+    "nombre": "CAI Hayuelos",
+    "direccion": "AC 22 KR 80D",
+    "telefono": "4260853"
+  },
+  "E09-07": {
+    "lat": 4.655961,
+    "lng": -74.108145,
+    "nombre": "CAI Salitre",
+    "direccion": "CL 25 CRA 68D",
+    "telefono": "2631016"
+  },
+  "E12-20": {
+    "lat": 4.684679,
+    "lng": -74.072003,
+    "nombre": "CAI Rio Negro",
+    "direccion": "CL 94 KR 65A",
+    "telefono": "2263121"
+  },
+  "E12-34": {
+    "lat": 4.67499,
+    "lng": -74.062819,
+    "nombre": "CAI Polo Club",
+    "direccion": "AK 24 CL 86A",
+    "telefono": "2366986"
+  },
+  "E12-28": {
+    "lat": 4.661736,
+    "lng": -74.068195,
+    "nombre": "CAI Alcázares",
+    "direccion": "CL 71 KR 24",
+    "telefono": "2252171"
+  },
+  "E12-05": {
+    "lat": 4.65823,
+    "lng": -74.077138,
+    "nombre": "CAI Siete de Agosto",
+    "direccion": "AK 30 CL 64",
+    "telefono": "6602248"
+  },
+  "E12-29": {
+    "lat": 4.66789462,
+    "lng": -74.07952283,
+    "nombre": "CAI Modelo",
+    "direccion": "AC 68 KR 56B",
+    "telefono": "2257969"
+  },
+  "E13-28": {
+    "lat": 4.646207,
+    "lng": -74.090647,
+    "nombre": "CAI Esmeralda",
+    "direccion": "CL 44C KR 54",
+    "telefono": "2222673"
+  },
+  "E13-07": {
+    "lat": 4.64940933,
+    "lng": -74.08312162,
+    "nombre": "CAI Federman",
+    "direccion": "CL 58A KR 45",
+    "telefono": "2222252"
+  },
+  "E13-19": {
+    "lat": 4.641682,
+    "lng": -74.074534,
+    "nombre": "CAI Galerías",
+    "direccion": "CL 53 KR 25",
+    "telefono": "3572611"
+  },
+  "E13-25": {
+    "lat": 4.648052,
+    "lng": -74.068764,
+    "nombre": "CAI San Luis",
+    "direccion": "CL 60 KR 18",
+    "telefono": "3457366"
+  },
+  "E13-38": {
+    "lat": 4.631384,
+    "lng": -74.075017,
+    "nombre": "CAI Soledad",
+    "direccion": "AK 24 CL 41",
+    "telefono": "2886685"
+  },
+  "E14-21": {
+    "lat": 4.61843307,
+    "lng": -74.07851063,
+    "nombre": "CAI Samper Mendoza",
+    "direccion": "CL 24 KR 19B",
+    "telefono": "2696363"
+  },
+  "E14-14": {
+    "lat": 4.612948,
+    "lng": -74.086461,
+    "nombre": "CAI Paloquemao",
+    "direccion": "KR 25 CL 17",
+    "telefono": "2012451"
+  },
+  "E14-12": {
+    "lat": 4.6089704,
+    "lng": -74.09350564,
+    "nombre": "CAI Ricaurte",
+    "direccion": "KR 28 CL 10",
+    "telefono": "2013344"
+  },
+  "E14-01": {
+    "lat": 4.598878,
+    "lng": -74.099955,
+    "nombre": "CAI Santa Isabel",
+    "direccion": "AK 27 CL 1G",
+    "telefono": "2019299"
+  },
+  "E16-18": {
+    "lat": 4.631536,
+    "lng": -74.108434,
+    "nombre": "CAI Puente Aranda",
+    "direccion": "CL 15 KR 55",
+    "telefono": "4462117"
+  },
+  "E16-29": {
+    "lat": 4.62021716,
+    "lng": -74.11900173,
+    "nombre": "CAI Galán",
+    "direccion": "KR 56 CL 4",
+    "telefono": "2904666"
+  },
+  "E16-17": {
+    "lat": 4.619104,
+    "lng": -74.106276,
+    "nombre": "CAI Gorgonzola",
+    "direccion": "AC 6 TV 42A",
+    "telefono": "3296998"
+  },
+  "E16-02": {
+    "lat": 4.601325,
+    "lng": -74.110448,
+    "nombre": "CAI Santa Matilde",
+    "direccion": "CL 8 SUR KR 35",
+    "telefono": "2021630"
+  },
+  "E16-12": {
+    "lat": 4.609127,
+    "lng": -74.128176,
+    "nombre": "CAI El Tejar",
+    "direccion": "AV 1 DE MAYO KR 68",
+    "telefono": "3572613"
+  },
+  "E15-21": {
+    "lat": 4.5920724,
+    "lng": -74.1206347,
+    "nombre": "CAI Villa Mayor",
+    "direccion": "CL 36 S KR 34C",
+    "telefono": "2031392"
+  },
+  "E15-05": {
+    "lat": 4.5893921,
+    "lng": -74.1047734,
+    "nombre": "CAI Valvanera",
+    "direccion": "KR 24G CL 17A SUR",
+    "telefono": "2093788"
+  },
+  "E15-14": {
+    "lat": 4.5867826,
+    "lng": -74.0978962,
+    "nombre": "CAI Restrepo",
+    "direccion": "CL 13A SUR KR 18 BIS",
+    "telefono": "3296995"
+  },
+  "E15-02": {
+    "lat": 4.582061,
+    "lng": -74.0902841,
+    "nombre": "CAI Ciudad Berna",
+    "direccion": "CL 11 SUR KR 10",
+    "telefono": "2802578"
+  },
+  "E11-87": {
+    "lat": 4.79589294,
+    "lng": -74.05848222,
+    "nombre": "CAI Guaymaral",
+    "direccion": "PARQUE 10 URBANIZACIÓN TORREMOLINOS",
+    "telefono": "6760076"
+  },
+  "E08-09": {
+    "lat": 4.6439,
+    "lng": -74.175484,
+    "nombre": "CAI Bellavista",
+    "direccion": "KR 94C CL 42A SUR",
+    "telefono": "2934903"
+  },
+  "E08-37": {
+    "lat": 4.642573,
+    "lng": -74.141294,
+    "nombre": "CAI Castilla",
+    "direccion": "CL 9 KR 78G",
+    "telefono": "2927420"
+  },
+  "E08-81": {
+    "lat": 4.644794,
+    "lng": -74.154591,
+    "nombre": "CAI Tinta",
+    "direccion": "CL 6D KR 87A",
+    "telefono": "2731936"
+  },
+  "E08-25": {
+    "lat": 4.638999,
+    "lng": -74.161112,
+    "nombre": "CAI Patio Bonito",
+    "direccion": "CL 26 SUR KR 87",
+    "telefono": "2999952"
+  },
+  "E08-26": {
+    "lat": 4.63301995,
+    "lng": -74.15558545,
+    "nombre": "CAI Caldas",
+    "direccion": "DG 38 SUR 80H 12",
+    "telefono": "2926298"
+  },
+  "E08-122": {
+    "lat": 4.62105742,
+    "lng": -74.16908242,
+    "nombre": "CAI Britalia",
+    "direccion": "KR 80F BIS CL 46 SUR",
+    "telefono": "2934903"
+  },
+  "E08-72": {
+    "lat": 4.61343684,
+    "lng": -74.1756025,
+    "nombre": "CAI Roma",
+    "direccion": "KR 80 DG 56A SUR",
+    "telefono": "7774811"
+  },
+  "E08-53": {
+    "lat": 4.607989,
+    "lng": -74.166038,
+    "nombre": "CAI Socorro",
+    "direccion": "CL 49 SUR KR 77Q",
+    "telefono": "2935102"
+  },
+  "E08-65": {
+    "lat": 4.607677,
+    "lng": -74.157811,
+    "nombre": "CAI Timiza",
+    "direccion": "CL 43 SUR KR 73",
+    "telefono": "4484482"
+  },
+  "E08-78": {
+    "lat": 4.609932,
+    "lng": -74.135446,
+    "nombre": "CAI Villa Claudia",
+    "direccion": "CL 34 SUR KR 68I",
+    "telefono": "7284069"
+  },
+  "E08-63": {
+    "lat": 4.599053,
+    "lng": -74.145135,
+    "nombre": "CAI Delicias",
+    "direccion": "AV BOYACA CL 44 SUR",
+    "telefono": "7109606"
+  },
+  "E08-60": {
+    "lat": 4.626064,
+    "lng": -74.147315,
+    "nombre": "CAI Techo",
+    "direccion": "KR 78B CL 6 SUR",
+    "telefono": "2997800"
+  },
+  "E08-56": {
+    "lat": 4.619016,
+    "lng": -74.145097,
+    "nombre": "CAI Oneida",
+    "direccion": "AV 1RO DE MAYO CL 35B SUR",
+    "telefono": "2935095"
+  },
+  "E07-31": {
+    "lat": 4.632986,
+    "lng": -74.201473,
+    "nombre": "CAI Metrovivienda",
+    "direccion": "KR 97C CL 70A SUR",
+    "telefono": "7234049"
+  },
+  "E07-28": {
+    "lat": 4.626118,
+    "lng": -74.191785,
+    "nombre": "CAI Libertad",
+    "direccion": "KR 88C CL 59C SUR",
+    "telefono": "7837267"
+  },
+  "E07-15": {
+    "lat": 4.63005743,
+    "lng": -74.17913634,
+    "nombre": "CAI Brasilia",
+    "direccion": "KR 87J CL 49C SUR",
+    "telefono": "7859260"
+  },
+  "E07-04": {
+    "lat": 4.612973,
+    "lng": -74.187222,
+    "nombre": "CAI Antonia Santos",
+    "direccion": "KR 81G CL 63 SUR",
+    "telefono": "7778844"
+  },
+  "E07-42": {
+    "lat": 4.6111507,
+    "lng": -74.20626945,
+    "nombre": "CAI San José",
+    "direccion": "KR 79A CL 80 SUR",
+    "telefono": "6700066"
+  },
+  "E07-67": {
+    "lat": 4.602254,
+    "lng": -74.190288,
+    "nombre": "CAI Piamonte",
+    "direccion": "KR 78C DG 69B SUR",
+    "telefono": "7755388"
+  },
+  "E07-21": {
+    "lat": 4.608164,
+    "lng": -74.19752,
+    "nombre": "CAI Laureles",
+    "direccion": "CL 72C SUR 80J 30",
+    "telefono": "7762197"
+  },
+  "E07-63": {
+    "lat": 4.59732,
+    "lng": -74.18008,
+    "nombre": "CAI La Estación",
+    "direccion": "KR 77B CL 65 SUR",
+    "telefono": "3572612"
+  },
+  "E07-46": {
+    "lat": 4.599817,
+    "lng": -74.162493,
+    "nombre": "CAI Villa Del Rio",
+    "direccion": "CL 57B SUR AK 71B",
+    "telefono": "2705062"
+  },
+  "E18-07": {
+    "lat": 4.583296,
+    "lng": -74.127269,
+    "nombre": "CAI Claret",
+    "direccion": "CL 44 SUR KR 27",
+    "telefono": "2059006"
+  },
+  "E18-17": {
+    "lat": 4.5695009,
+    "lng": -74.12179505,
+    "nombre": "CAI San Jorge",
+    "direccion": "TV 13H CL 45F SUR",
+    "telefono": "7144220"
+  },
+  "E18-16": {
+    "lat": 4.5641026,
+    "lng": -74.10720921,
+    "nombre": "CAI Lomas",
+    "direccion": "CL 39A SUR KR 9G",
+    "telefono": "2727220"
+  },
+  "E18-23": {
+    "lat": 4.5550186,
+    "lng": -74.11748425,
+    "nombre": "CAI Los Molinos",
+    "direccion": "KR 5U DG 49D BIS SUR",
+    "telefono": "7692199"
+  },
+  "E18-29": {
+    "lat": 4.545344,
+    "lng": -74.105566,
+    "nombre": "CAI Diana Turbay",
+    "direccion": "CL 48X SUR KR 1",
+    "telefono": "7722157"
+  },
+  "E18-30": {
+    "lat": 4.54221299,
+    "lng": -74.11063946,
+    "nombre": "CAI Palermo Sur",
+    "direccion": "TV 2D BIS CL 52 SUR",
+    "telefono": "7604317"
+  },
+  "E06-25": {
+    "lat": 4.589878,
+    "lng": -74.13838,
+    "nombre": "CAI Venecia",
+    "direccion": "TV 44 DG 50B SUR",
+    "telefono": "7859260"
+  },
+  "E06-08": {
+    "lat": 4.576625,
+    "lng": -74.130524,
+    "nombre": "CAI Tunal",
+    "direccion": "KR 24 CL 48C SUR",
+    "telefono": "7140985"
+  },
+  "E06-21": {
+    "lat": 4.56729878,
+    "lng": -74.12969227,
+    "nombre": "CAI San Carlos",
+    "direccion": "DG 51B SUR KR 18B",
+    "telefono": "7144799"
+  },
+  "E04-53": {
+    "lat": 4.585622,
+    "lng": -74.084572,
+    "nombre": "CAI Cárcel Distrital",
+    "direccion": "KR 8 CL 1C SUR",
+    "telefono": "3296997"
+  },
+  "E01-42": {
+    "lat": 4.73777539,
+    "lng": -74.02257068,
+    "nombre": "CAI Villa Nidia",
+    "direccion": "AK 7 CL 163A",
+    "telefono": "6722797"
+  },
+  "E01-15": {
+    "lat": 4.74368964,
+    "lng": -74.0396955,
+    "nombre": "CAI Toberin",
+    "direccion": "CL 164 KR 16C",
+    "telefono": "6789988"
+  },
+  "E01-22": {
+    "lat": 4.72061342,
+    "lng": -74.04690304,
+    "nombre": "CAI Contador",
+    "direccion": "AK 19 CL 137",
+    "telefono": "6264494"
+  },
+  "E01-31": {
+    "lat": 4.695576,
+    "lng": -74.055259,
+    "nombre": "CAI Navarra",
+    "direccion": "AUTOPISTA NORTE  CL 108A",
+    "telefono": "6193227"
+  },
+  "E01-26": {
+    "lat": 4.702021,
+    "lng": -74.051274,
+    "nombre": "CAI Unicentro",
+    "direccion": "CALLE 122 KR 20",
+    "telefono": "6196639"
+  },
+  "E01-56": {
+    "lat": 4.69311289,
+    "lng": -74.03128581,
+    "nombre": "CAI Santa Bárbara",
+    "direccion": "KR 6 CL 116",
+    "telefono": "6290897"
+  },
+  "E01-57": {
+    "lat": 4.675933,
+    "lng": -74.026807,
+    "nombre": "CAI La Calera",
+    "direccion": "KM 3 VIA LA CALERA",
+    "telefono": "6320840"
+  },
+  "E02-30": {
+    "lat": 4.673218,
+    "lng": -74.054053,
+    "nombre": "CAI El Virrey",
+    "direccion": "KR 15 CL 88",
+    "telefono": "5521188"
+  },
+  "E02-37": {
+    "lat": 4.670368,
+    "lng": -74.050045,
+    "nombre": "CAI El Estadero",
+    "direccion": "CL 87 KR 11",
+    "telefono": "3572606"
+  },
+  "E02-23": {
+    "lat": 4.661839,
+    "lng": -74.055707,
+    "nombre": "CAI Oxxy",
+    "direccion": "CL 77 KR 11",
+    "telefono": "2177555"
+  },
+  "E02-25": {
+    "lat": 4.656131,
+    "lng": -74.049053,
+    "nombre": "CAI Rosales",
+    "direccion": "AK 1 CL 76A",
+    "telefono": "2116777"
+  },
+  "E02-09": {
+    "lat": 4.655214,
+    "lng": -74.055979,
+    "nombre": "CAI Avenida Chile",
+    "direccion": "CL 72  AK 7",
+    "telefono": "2118355"
+  },
+  "E02-51": {
+    "lat": 4.649822,
+    "lng": -74.061841,
+    "nombre": "CAI Lourdes",
+    "direccion": "AC 63 9A 04",
+    "telefono": "2111269"
+  },
+  "E02-48": {
+    "lat": 4.646862,
+    "lng": -74.056779,
+    "nombre": "CAI Granada",
+    "direccion": "KR 3B CL 64",
+    "telefono": "2125888"
+  },
+  "E03-48": {
+    "lat": 4.612001,
+    "lng": -74.069841,
+    "nombre": "CAI San Diego",
+    "direccion": "KR 7 CL 26",
+    "telefono": "2860580"
+  },
+  "E03-10": {
+    "lat": 4.61852051,
+    "lng": -74.06931898,
+    "nombre": "CAI Telecom",
+    "direccion": "CL 32 KR 13 41",
+    "telefono": "3340973"
+  },
+  "E03-42": {
+    "lat": 4.605535,
+    "lng": -74.074407,
+    "nombre": "CAI Colseguros",
+    "direccion": "KR 10 CL 17",
+    "telefono": "3296992"
+  },
+  "E03-18": {
+    "lat": 4.606137,
+    "lng": -74.066767,
+    "nombre": "CAI Torres Blancas",
+    "direccion": "KR 3 CL 22A",
+    "telefono": "3296990"
+  },
+  "E03-23": {
+    "lat": 4.604057,
+    "lng": -74.061927,
+    "nombre": "CAI Monserrate",
+    "direccion": "AV CIRCUNVALAR CL 23",
+    "telefono": "2869408"
+  },
+  "E17-15": {
+    "lat": 4.600539,
+    "lng": -74.071376,
+    "nombre": "CAI Rosario",
+    "direccion": "AV JIMENEZ KR 5",
+    "telefono": "2860744"
+  },
+  "E03-04": {
+    "lat": 4.601418,
+    "lng": -74.081216,
+    "nombre": "CAI San Victorino",
+    "direccion": "AV CARACAS CL 10",
+    "telefono": "2864454"
+  },
+  "E03-25": {
+    "lat": 4.58952117,
+    "lng": -74.08146018,
+    "nombre": "CAI Cruces",
+    "direccion": "CL 2 KR 8",
+    "telefono": "2804343"
+  },
+  "E05-23": {
+    "lat": 4.4917238,
+    "lng": -74.1045696,
+    "nombre": "CAI Nuevo Porvenir",
+    "direccion": "KR 5B ESTE DG 100 SUR",
+    "telefono": "7624800"
+  },
+  "E11-10": {
+    "lat": 4.734326,
+    "lng": -74.096124,
+    "nombre": "CAI Aures",
+    "direccion": "KR 101 CL 132",
+    "telefono": "6922230"
+  }
+}

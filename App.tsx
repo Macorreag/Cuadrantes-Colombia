@@ -18,6 +18,7 @@ const App: React.FC = () => {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const caiMarkerRef = useRef<any>(null);
+  const estacionMarkerRef = useRef<any>(null);
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [selectedQuadrant, setSelectedQuadrant] = useState<QuadrantData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -60,6 +61,38 @@ const App: React.FC = () => {
     console.log(`📍 CAI marcado: ${caiLocation.name} (${caiLocation.lat}, ${caiLocation.lng})`);
   };
 
+  // Función para crear el marcador de la Estación de Policía
+  const updateEstacionMarker = (estacion: QuadrantData['estacionPolicia']) => {
+    // Remover marcador anterior
+    if (estacionMarkerRef.current) {
+      mapInstanceRef.current?.data.remove(estacionMarkerRef.current);
+      estacionMarkerRef.current = null;
+    }
+
+    if (!estacion || !mapInstanceRef.current) return;
+
+    // Crear un punto GeoJSON para la Estación
+    const estacionGeoJson = {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [estacion.lng, estacion.lat]
+      },
+      properties: {
+        type: 'estacion',
+        name: estacion.nombre
+      }
+    };
+
+    // Agregar el punto al mapa usando Data Layer
+    const features = mapInstanceRef.current.data.addGeoJson(estacionGeoJson);
+    if (features && features.length > 0) {
+      estacionMarkerRef.current = features[0];
+    }
+
+    console.log(`🏛️ Estación marcada: ${estacion.nombre} (${estacion.lat}, ${estacion.lng})`);
+  };
+
   const fetchQuadrantAtLocation = async (lat: number, lng: number) => {
     if (!mapInstanceRef.current) return;
     
@@ -81,6 +114,9 @@ const App: React.FC = () => {
         // Actualizar marcador del CAI
         updateCAIMarker(result.quadrant.caiLocation);
         
+        // Actualizar marcador de la Estación de Policía
+        updateEstacionMarker(result.quadrant.estacionPolicia);
+        
         // Actualizar estado
         setSelectedQuadrant(result.quadrant);
         setDataSource(result.source);
@@ -92,6 +128,7 @@ const App: React.FC = () => {
         setSelectedQuadrant(null);
         setDataSource(null);
         updateCAIMarker(undefined);
+        updateEstacionMarker(undefined);
       }
     } catch (error) {
       console.error("Error en sincronización SIDENCO:", error);
@@ -125,16 +162,33 @@ const App: React.FC = () => {
 
         mapInstanceRef.current = map;
 
-        // Estilo dinámico: diferente para polígonos (cuadrantes) y puntos (CAIs)
+        // Estilo dinámico: diferente para polígonos, CAIs y Estaciones
         map.data.setStyle((feature: any) => {
           const geomType = feature.getGeometry()?.getType();
+          const featureType = feature.getProperty('type');
           
           if (geomType === 'Point') {
-            // Estilo para el marcador del CAI - usando símbolo de círculo (valor 0 en SymbolPath)
+            // Estilo para Estación de Policía - cuadrado amarillo/dorado
+            if (featureType === 'estacion') {
+              return {
+                icon: {
+                  path: 'M -1,-1 1,-1 1,1 -1,1 z', // Cuadrado
+                  fillColor: '#f59e0b', // Amarillo/dorado
+                  fillOpacity: 1,
+                  strokeColor: '#ffffff',
+                  strokeWeight: 2,
+                  scale: 10,
+                  rotation: 45 // Rombo
+                },
+                zIndex: 999
+              };
+            }
+            
+            // Estilo para el CAI - círculo azul
             return {
               icon: {
                 path: 0, // google.maps.SymbolPath.CIRCLE = 0
-                fillColor: '#3b82f6',
+                fillColor: '#3b82f6', // Azul
                 fillOpacity: 1,
                 strokeColor: '#ffffff',
                 strokeWeight: 3,

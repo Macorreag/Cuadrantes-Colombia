@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Phone, Shield, ChevronDown, ChevronUp, Radio, User, MapPin } from 'lucide-react';
+import { Phone, Shield, ChevronDown, ChevronUp, Radio, User, MapPin, Building2 } from 'lucide-react';
 import { QuadrantData } from '../types';
 
 interface Props {
@@ -57,6 +57,51 @@ const QuadrantPanel: React.FC<Props> = ({ quadrant, loading }) => {
       <div className={`grid transition-all duration-500 ease-in-out ${isCollapsed ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100'}`}>
         <div className="overflow-hidden">
           <div className="p-5 space-y-6">
+            {/* Información de Estación de Policía */}
+            {quadrant.estacionPolicia && (
+              <div className="flex flex-col gap-3 p-4 rounded-2xl bg-amber-500/5 border border-amber-500/20 pointer-events-auto">
+                <div className="flex items-center gap-2">
+                  <Building2 size={14} className="text-amber-400" />
+                  <span className="text-[10px] font-bold text-amber-400/60 uppercase tracking-widest">Estación de Policía</span>
+                </div>
+                <div>
+                  <p className="text-[11px] font-black text-white/90">{quadrant.estacionPolicia.nombre}</p>
+                  {quadrant.estacionPolicia.direccion && (
+                    <p className="text-[9px] text-white/50 mt-1">{quadrant.estacionPolicia.direccion}</p>
+                  )}
+                </div>
+                <div className="flex items-center gap-3 pointer-events-auto">
+                  {quadrant.estacionPolicia.telefono && (
+                    <a
+                      href={`tel:${quadrant.estacionPolicia.telefono}`}
+                      className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 transition-all text-[9px] font-bold text-amber-400 pointer-events-auto cursor-pointer"
+                    >
+                      <Phone size={10} />
+                      {quadrant.estacionPolicia.telefono}
+                    </a>
+                  )}
+                  {quadrant.estacionPolicia.email && (
+                    <a
+                      href={`mailto:${quadrant.estacionPolicia.email}`}
+                      className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 transition-all text-[8px] font-bold text-amber-400 truncate pointer-events-auto cursor-pointer"
+                      title={quadrant.estacionPolicia.email}
+                    >
+                      {quadrant.estacionPolicia.email}
+                    </a>
+                  )}
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${quadrant.estacionPolicia.lat || 0},${quadrant.estacionPolicia.lng || 0}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-shrink-0 p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/30 hover:border-amber-400/50 transition-all group/estmaps pointer-events-auto cursor-pointer"
+                    title="Ver ubicación de la Estación en Google Maps"
+                  >
+                    <MapPin size={12} className="text-amber-400 group-hover/estmaps:text-amber-300" />
+                  </a>
+                </div>
+              </div>
+            )}
+
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between gap-4 mb-1">
                 <div className="flex items-center gap-2 flex-shrink-0">
